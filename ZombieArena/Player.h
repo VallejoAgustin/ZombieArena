@@ -1,4 +1,7 @@
-#pragma once
+#ifndef PLAYER_H
+#define PLAYER_H
+
+#include "stdafx.h"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -47,9 +50,12 @@ public:
 
 	void update(float elapsedTime, Vector2i mousePosition);
 
+	void upgradeSpeed();
 	void upgradeHealth();
 
 	void increaseHealthLevel(int amount);
 
 	int getHealth();
 };
+
+#endif
