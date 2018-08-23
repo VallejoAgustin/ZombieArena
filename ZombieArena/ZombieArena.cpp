@@ -6,13 +6,17 @@
 
 using namespace sf;
 
+enum class GameState {
+	PAUSED, LEVELING_UP, GAME_OVER, PLAYING
+};
+
 //handles w-a-s-d movement of the player
 void wasdMovement(Player &);
 
 int main(){
-	enum class GameState {
+	/*enum class GameState {
 		PAUSED, LEVELING_UP, GAME_OVER, PLAYING
-	};
+	};*/
 
 	//game starts in game-over state
 	GameState state = GameState::GAME_OVER;
@@ -71,9 +75,92 @@ int main(){
 			window.close();
 		}
 
+		//movement
 		if (state == GameState::PLAYING) {
 			wasdMovement(player);
 		}
+
+		//level
+		if (state == GameState::LEVELING_UP) {
+			if (event.key.code == Keyboard::Num1) {
+				state = GameState::PLAYING;
+			}
+			if (event.key.code == Keyboard::Num2) {
+				state = GameState::PLAYING;
+			}
+			if (event.key.code == Keyboard::Num3) {
+				state = GameState::PLAYING;
+			}
+			if (event.key.code == Keyboard::Num4) {
+				state = GameState::PLAYING;
+			}
+			if (event.key.code == Keyboard::Num5) {
+				state = GameState::PLAYING;
+			}
+			if (event.key.code == Keyboard::Num6) {
+				state = GameState::PLAYING;
+			}
+
+			if (state == GameState::PLAYING) {
+				//will be modified
+				arena.width = 500;
+				arena.height = 500;
+				arena.left = 0;
+				arena.top = 0;
+
+				int tileSize = 50;
+
+				//spawn player in middle of arena
+				player.spawn(arena, resolution, tileSize);
+
+				clock.restart();
+			}
+		}
+
+		//update frame
+
+		if (state == GameState::PLAYING) {
+			Time dt = clock.restart();
+			gameTimeTotal += dt;
+
+			float dtAsSeconds = dt.asSeconds();
+
+			//find mouse pointer
+			mouseScreenPosition = Mouse::getPosition();
+			//convert to world coords
+			mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, mainView);
+			//update player based on mouse::getposi();
+			player.update(dtAsSeconds, mouseScreenPosition);
+
+			//save player's new position
+			Vector2f playerPosition(player.getCenter());
+
+			//view center around player
+			mainView.setCenter(player.getCenter());
+		}
+
+		//draw scene
+		if (state == GameState::PLAYING) {
+			window.clear();
+
+			//set window view to main view
+			window.setView(mainView);
+
+			//draw player
+			window.draw(player.getSprite());
+		}
+
+		if (state == GameState::LEVELING_UP) {
+
+		}
+		if (state == GameState::PAUSED) {
+
+		}
+		if (state == GameState::GAME_OVER) {
+
+		}
+
+		window.display();
 	}
 
     return 0;
