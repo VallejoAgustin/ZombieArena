@@ -1,9 +1,9 @@
+#include "stdafx.h"
 #include "Player.h"
-#include <iostream>
 
 Player::Player() {
 	if (!_texture.loadFromFile("graphics/player.png")) {
-		std::cout << "Error loading player image!\n";
+		//std::cout << "Error loading player image!\n";
 		//TODO: try/catch
 	}
 	_sprite.setTexture(_texture);
@@ -146,7 +146,7 @@ void Player::upgradeHealth() {
 
 void Player::increaseHealthLevel(int amount) {
 	_health += amount;
-	
+
 	//ensure health does not exceed max
 	if (_health > _maxHealth) {
 		_health = _maxHealth;
