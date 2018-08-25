@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "CreateBackground.h"
 #include "Player.h"
 
 using namespace sf;
@@ -43,6 +44,12 @@ int main(){
 	Player player;
 
 	IntRect arena;//prev code (right click, outlining, hide selection
+
+	//create background
+	VertexArray background;
+	//load texture
+	Texture textureBackground;
+	textureBackground.loadFromFile("graphics/background_sheet.png");
 
 	while (window.isOpen()) {
 		//handle events
@@ -108,7 +115,8 @@ int main(){
 				arena.left = 0;
 				arena.top = 0;
 
-				int tileSize = 50;
+				//pass vertex array by reference
+				int tileSize = createBackground(background, arena);
 
 				//spawn player in middle of arena
 				player.spawn(arena, resolution, tileSize);
@@ -146,6 +154,9 @@ int main(){
 			//set window view to main view
 			window.setView(mainView);
 
+			//draw background
+			window.draw(background, &textureBackground);
+
 			//draw player
 			window.draw(player.getSprite());
 		}
@@ -174,16 +185,16 @@ void wasdMovement(Player & player) {
 		player.stopUp();
 	}
 	if (Keyboard::isKeyPressed(Keyboard::A)) {
-		player.moveDown();
-	}
-	else {
-		player.stopDown();
-	}
-	if (Keyboard::isKeyPressed(Keyboard::S)) {
 		player.moveLeft();
 	}
 	else {
 		player.stopLeft();
+	}
+	if (Keyboard::isKeyPressed(Keyboard::S)) {
+		player.moveDown();
+	}
+	else {
+		player.stopDown();
 	}
 	if (Keyboard::isKeyPressed(Keyboard::D)) {
 		player.moveRight();
