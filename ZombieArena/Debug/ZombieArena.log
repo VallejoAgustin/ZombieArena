@@ -1,3 +1,12 @@
-﻿  Zombie.cpp
-Zombie.obj : error LNK2019: unresolved external symbol "public: static class sf::Texture & __cdecl TextureHolder::getTexture(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (?getTexture@TextureHolder@@SAAAVTexture@sf@@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) referenced in function "public: bool __thiscall Zombie::hit(void)" (?hit@Zombie@@QAE_NXZ)
-C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.exe : fatal error LNK1120: 1 unresolved externals
+﻿  ZombieArena.cpp
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(25): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(26): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(29): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  Zombie.cpp
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombie.cpp(43): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombie.cpp(75): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  TextureHolder.cpp
+  Generating Code...
+  LINK : C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.exe not found or not built by the last incremental link; performing full link
+  ZombieArena.vcxproj -> C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.exe
+  ZombieArena.vcxproj -> C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.pdb (Full PDB)
