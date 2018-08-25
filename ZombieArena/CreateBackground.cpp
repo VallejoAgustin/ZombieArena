@@ -32,7 +32,7 @@ int createBackground(VertexArray & vA, IntRect arena) {
 			}
 			else {
 				srand((int)time(0) + i * j - i);
-				int mOrG = rand() % TILE_TYPES;
+				int mOrG = rand() % TILE_TYPES;//mud or grass
 				int verticalOffset = mOrG * TILE_SIZE;
 
 				vA[currentVertex + 0].texCoords = Vector2f(0, 0 + verticalOffset);

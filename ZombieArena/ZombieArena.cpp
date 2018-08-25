@@ -15,10 +15,6 @@ enum class GameState {
 void wasdMovement(Player &);
 
 int main(){
-	/*enum class GameState {
-		PAUSED, LEVELING_UP, GAME_OVER, PLAYING
-	};*/
-
 	//game starts in game-over state
 	GameState state = GameState::GAME_OVER;
 
