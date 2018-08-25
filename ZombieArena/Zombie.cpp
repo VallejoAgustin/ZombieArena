@@ -3,6 +3,7 @@
 #include "TextureHolder.h"
 #include <cstdlib>
 #include <ctime>
+#include <SFML\Graphics.hpp>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ bool Zombie::hit() {
 		return true;
 	}
 	return false;
-}
+}/*
 bool Zombie::isAlive() {
 	return _alive;
 }
@@ -89,4 +90,4 @@ void Zombie::update(float elapsedTime, Vector2f playerLocation) {
 	//rotate zombie depending on player location
 	float angle = (atan2(playerY - _position.y, playerX - _position.x) * 180) / 3.141;
 	_sprite.setRotation(angle);
-}
+}*/

@@ -160,10 +160,12 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="CreateBackground.h" />
     <ClInclude Include="TextureHolder.h" />
+    <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CreateBackground.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="ZombieArena.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

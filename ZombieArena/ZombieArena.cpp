@@ -4,6 +4,8 @@
 #include <SFML/Audio.hpp>
 #include "CreateBackground.h"
 #include "Player.h"
+#include "TextureHolder.h"
+#include "Zombie.h"
 
 using namespace sf;
 
