@@ -33,9 +33,6 @@
     <ClInclude Include="TextureHolder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Zombie.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -50,7 +47,7 @@
     <ClCompile Include="CreateBackground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Zombie.cpp">
+    <ClCompile Include="TextureHolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
