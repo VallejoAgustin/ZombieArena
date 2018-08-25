@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClCompile Include="CreateBackground.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="TextureHolder.cpp" />
     <ClCompile Include="ZombieArena.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
