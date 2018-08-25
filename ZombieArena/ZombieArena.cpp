@@ -17,6 +17,7 @@ enum class GameState {
 void wasdMovement(Player &);
 
 int main(){
+	TextureHolder holder;
 	//game starts in game-over state
 	GameState state = GameState::GAME_OVER;
 
@@ -48,6 +49,9 @@ int main(){
 	//load texture
 	Texture textureBackground;
 	textureBackground.loadFromFile("graphics/background_sheet.png");
+
+	int numZombies, numZombiesAlive;
+	Zombie* zombies = nullptr;
 
 	while (window.isOpen()) {
 		//handle events
@@ -119,6 +123,17 @@ int main(){
 				//spawn player in middle of arena
 				player.spawn(arena, resolution, tileSize);
 
+				//create horde
+				numZombies = 10;//TODO: dynamic on level
+
+				//free up memory
+				delete[] zombies;
+
+				//use memory
+				zombies = createHorde(numZombies, arena);
+
+				numZombiesAlive = numZombies;
+
 				clock.restart();
 			}
 		}
@@ -143,6 +158,13 @@ int main(){
 
 			//view center around player
 			mainView.setCenter(player.getCenter());
+
+			//update all zombies that are alive TODO: list
+			for (int i = 0; i < numZombies; i++) {
+				if (zombies[i].isAlive()) {
+					zombies[i].update(dt.asSeconds(), playerPosition);
+				}
+			}
 		}
 
 		//draw scene
@@ -154,6 +176,11 @@ int main(){
 
 			//draw background
 			window.draw(background, &textureBackground);
+
+			//draw zombies, dead ones too for splatter image (blood)
+			for (int i = 0; i < numZombies; i++) {
+				window.draw(zombies[i].getSprite());
+			}
 
 			//draw player
 			window.draw(player.getSprite());
@@ -171,6 +198,10 @@ int main(){
 
 		window.display();
 	}
+
+	//free memory
+	delete[] zombies;
+	zombies = nullptr;
 
     return 0;
 }

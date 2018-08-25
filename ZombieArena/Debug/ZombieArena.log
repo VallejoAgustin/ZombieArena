@@ -1,12 +1,6 @@
 ﻿  ZombieArena.cpp
-c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(25): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
 c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(26): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(29): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-  Zombie.cpp
-c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombie.cpp(43): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombie.cpp(75): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  TextureHolder.cpp
-  Generating Code...
-  LINK : C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.exe not found or not built by the last incremental link; performing full link
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(27): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(30): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
   ZombieArena.vcxproj -> C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.exe
   ZombieArena.vcxproj -> C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.pdb (Full PDB)
