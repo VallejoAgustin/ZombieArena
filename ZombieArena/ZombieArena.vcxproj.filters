@@ -30,6 +30,9 @@
     <ClInclude Include="CreateBackground.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextureHolder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
