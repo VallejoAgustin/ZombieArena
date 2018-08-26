@@ -74,6 +74,10 @@ int main(){
 	Pickup healthPickup(1);
 	Pickup ammoPickup(2);
 
+	//about game
+	int score = 0;
+	int hiScore = 0;
+
 	while (window.isOpen()) {
 		//handle events
 		Event event;
@@ -168,30 +172,30 @@ int main(){
 				arena.width = 500;
 				arena.height = 500;
 				arena.left = 0;
-				arena.top = 0;
+arena.top = 0;
 
-				//pass vertex array by reference
-				int tileSize = createBackground(background, arena);
+//pass vertex array by reference
+int tileSize = createBackground(background, arena);
 
-				//spawn player in middle of arena
-				player.spawn(arena, resolution, tileSize);
+//spawn player in middle of arena
+player.spawn(arena, resolution, tileSize);
 
-				//configure pickups
-				healthPickup.setArena(arena);
-				ammoPickup.setArena(arena);
+//configure pickups
+healthPickup.setArena(arena);
+ammoPickup.setArena(arena);
 
-				//create horde
-				numZombies = 10;//TODO: dynamic on level
+//create horde
+numZombies = 10;//TODO: dynamic on level
 
-				//free up memory
-				delete[] zombies;
+//free up memory
+delete[] zombies;
 
-				//use memory
-				zombies = createHorde(numZombies, arena);
+//use memory
+zombies = createHorde(numZombies, arena);
 
-				numZombiesAlive = numZombies;
+numZombiesAlive = numZombies;
 
-				clock.restart();
+clock.restart();
 			}
 		}
 
@@ -207,10 +211,10 @@ int main(){
 			mouseScreenPosition = Mouse::getPosition();
 			//convert to world coords
 			mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, mainView);
-			
+
 			//set crosshair to mouse world location
 			spriteCrosshair.setPosition(mouseWorldPosition);
-			
+
 			//update player based on mouse::getposi();
 			player.update(dtAsSeconds, mouseScreenPosition);
 
@@ -237,6 +241,57 @@ int main(){
 			//update pickups
 			healthPickup.update(dtAsSeconds);
 			ammoPickup.update(dtAsSeconds);
+
+			//collision detection for bullet and zombies
+			for (int i = 0; i < MAX_BULLETS; i++) {
+				for (int j = 0; j < numZombies; j++) {
+					if (bullets[i].isInFlight() && zombies[j].isAlive()) {
+						//if bullet intersects w/ active zombie
+						if (bullets[i].getPosition().intersects(zombies[j].getPosition())) {
+							bullets[i].stopBullet();
+
+							//register hit and check if dead (.hit())
+							if (zombies[j].hit()) {
+								score += 10;
+
+								if (score >= hiScore) {
+									hiScore = score;
+								}
+
+								numZombiesAlive--;
+								//no more zombies
+								if (numZombiesAlive == 0) {
+									state = GameState::LEVELING_UP;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//have zombies touched player
+			for (int i = 0; i < numZombies; i++) {
+				if (zombies[i].isAlive()) {
+					if (zombies[i].getPosition().intersects(player.getPosition())){
+						if (player.hit(gameTimeTotal)) {
+							//TODO:
+						}
+
+						//player died
+						if (player.getHealth() <= 0) {
+							state = GameState::GAME_OVER;
+						}
+					}
+				}
+			}
+
+			//player touched pickup
+			if (player.getPosition().intersects(healthPickup.getPosition()) && healthPickup.isSpawned()) {
+				player.increaseHealthLevel(healthPickup.gotIt());
+			}
+			if (player.getPosition().intersects(ammoPickup.getPosition()) && ammoPickup.isSpawned()) {
+				bulletsSpare += ammoPickup.gotIt();
+			}
 		}
 
 		//draw scene
