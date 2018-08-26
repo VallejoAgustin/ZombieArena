@@ -6,7 +6,6 @@
 #include "Player.h"
 #include "TextureHolder.h"
 #include "Zombie.h"
-#include "Bullet.h"
 
 using namespace sf;
 
@@ -52,16 +51,6 @@ int main(){
 	int numZombies, numZombiesAlive;
 	Zombie* zombies = nullptr;
 
-	//setting constant bullet array (dont expect player to exceed 100 bullets)
-	const int MAX_BULLETS = 100;
-	Bullet bullets[MAX_BULLETS];
-	int currentBullet = 0;
-	int bulletsSpare = 24;
-	int bulletsInClip = 6;
-	int clipSize = 6;
-	float fireRate = 1;
-	Time fireLastPressed;
-
 	while (window.isOpen()) {
 		//handle events
 		Event event;
@@ -83,22 +72,7 @@ int main(){
 				}
 
 				if (state == GameState::PLAYING) {
-					//reloading
-					if (event.key.code == Keyboard::R) {
-						if (bulletsSpare >= clipSize) {
-							//enough ammo
-							bulletsInClip = clipSize;
-							bulletsSpare -= clipSize;
-						}
-						else if (bulletsSpare > 0) {
-							//enough for SOME reload
-							bulletsInClip = bulletsSpare;
-							bulletsSpare = 0;
-						}
-						else {
-							//TODO:sound
-						}
-					}
+
 				}
 			}
 		}
@@ -111,23 +85,6 @@ int main(){
 		//movement
 		if (state == GameState::PLAYING) {
 			wasdMovement(player);
-
-			//fire bullet
-			if (Mouse::isButtonPressed(Mouse::Left)) {
-				if (gameTimeTotal.asMilliseconds() - fireLastPressed.asMilliseconds() > 1000 / fireRate && bulletsInClip > 0) {
-					//shoot bullet, increase bullets active
-					bullets[currentBullet++].shoot(player.getCenter().x, player.getCenter().y, mouseWorldPosition.x, mouseWorldPosition.y);
-
-					//over the '100' array
-					if (currentBullet > MAX_BULLETS - 1) {
-						currentBullet = 0;
-					}
-
-					fireLastPressed = gameTimeTotal;
-
-					bulletsInClip--;
-				}
-			}
 		}
 
 		//level
@@ -206,13 +163,6 @@ int main(){
 					zombies[i].update(dt.asSeconds(), playerPosition);
 				}
 			}
-
-			//update bullets in flight
-			for (int i = 0; i < MAX_BULLETS; i++) {
-				if (bullets[i].isInFlight()) {
-					bullets[i].update(dtAsSeconds);
-				}
-			}
 		}
 
 		//draw scene
@@ -228,13 +178,6 @@ int main(){
 			//draw zombies, dead ones too for splatter image (blood)
 			for (int i = 0; i < numZombies; i++) {
 				window.draw(zombies[i].getSprite());
-			}
-
-			//draw bullets if active
-			for (int i = 0; i < MAX_BULLETS; i++) {
-				if(bullets[i].isInFlight()){
-					window.draw(bullets[i].getShape());
-				}
 			}
 
 			//draw player
