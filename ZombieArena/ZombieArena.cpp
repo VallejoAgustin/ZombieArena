@@ -327,8 +327,8 @@ int main(){
 				wave++;
 
 				//will be modified
-				arena.width = 500 * wave;
-				arena.height = 500 * wave;
+				arena.width = 500 + (500 * wave / 4);
+				arena.height = 500 + (500 * wave / 4);
 				arena.left = 0;
 				arena.top = 0;
 
