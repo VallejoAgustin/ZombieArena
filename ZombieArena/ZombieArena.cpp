@@ -1,5 +1,6 @@
 //ZombieArena.cpp : Defines the entry point for the console application.
 #include "stdafx.h"
+#include <fstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "CreateBackground.h"
@@ -136,6 +137,13 @@ int main(){
 	scoreText.setFillColor(Color::White);
 	scoreText.setPosition(20, 0);
 
+	//load hiscore
+	std::ifstream inputFile("gamedata/scores.txt");
+	if (inputFile.is_open()) {
+		inputFile >> hiScore;
+		inputFile.close();
+	}
+
 	//hi score
 	Text hiScoreText;
 	hiScoreText.setFont(font);
@@ -176,6 +184,24 @@ int main(){
 	int framesSinceLastHUDUpdate = 0;
 	int fpsMeasurementFrameInterval = 1000;
 
+	//handle sounds
+	SoundBuffer hitBuffer, splatBuffer, shootBuffer, reloadBuffer, reloadFailedBuffer, powerUpBuffer, pickupBuffer;
+	Sound hit, splat, shoot, reload, reloadFailed, powerUp, pickUp;
+	hitBuffer.loadFromFile("sound/hit.wav");
+	splatBuffer.loadFromFile("sound/splat.wav");
+	shootBuffer.loadFromFile("sound/shoot.wav");
+	reloadBuffer.loadFromFile("sound/reload.wav");
+	reloadFailedBuffer.loadFromFile("sound/reload_failed.wav");
+	powerUpBuffer.loadFromFile("sound/powerup.wav");
+	pickupBuffer.loadFromFile("sound/pickup.wav");
+	hit.setBuffer(hitBuffer);
+	splat.setBuffer(splatBuffer);
+	shoot.setBuffer(shootBuffer);
+	reload.setBuffer(reloadBuffer);
+	reloadFailed.setBuffer(reloadFailedBuffer);
+	powerUp.setBuffer(powerUpBuffer);
+	pickUp.setBuffer(pickupBuffer);
+
 	while (window.isOpen()) {
 		//handle events
 		Event event;
@@ -193,7 +219,20 @@ int main(){
 				}
 				//new-game from game over
 				else if (event.key.code == Keyboard::Return && state == GameState::GAME_OVER) {
-					state = GameState::LEVELING_UP;//????
+					state = GameState::LEVELING_UP;
+
+					//reset game
+					wave = 0;
+					score = 0;
+
+					//TODO: func or class for this?
+					currentBullet = 0;
+					bulletsSpare = 24;
+					bulletsInClip = 6;
+					clipSize = 6;
+					fireRate = 1;
+
+					player.resetPlayerStats();
 				}
 
 				if (state == GameState::PLAYING) {
@@ -203,14 +242,16 @@ int main(){
 							//enough ammo
 							bulletsInClip = clipSize;
 							bulletsSpare -= clipSize;
+							reload.play();
 						}
 						else if (bulletsSpare > 0) {
 							//enough for SOME reload
 							bulletsInClip = bulletsSpare;
 							bulletsSpare = 0;
+							reload.play();
 						}
 						else {
-							//TODO:sound
+							reloadFailed.play();
 						}
 					}
 				}
@@ -239,6 +280,9 @@ int main(){
 
 					fireLastPressed = gameTimeTotal;
 
+					//play sound
+					shoot.play();
+
 					bulletsInClip--;
 				}
 			}
@@ -247,53 +291,70 @@ int main(){
 		//level
 		if (state == GameState::LEVELING_UP) {
 			if (event.key.code == Keyboard::Num1) {
+				//increase firerate
+				fireRate++;
 				state = GameState::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num2) {
+				//increase clip size
+				clipSize += clipSize;
 				state = GameState::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num3) {
+				//increase health
+				player.upgradeHealth();
 				state = GameState::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num4) {
+				//increase speed
+				player.upgradeSpeed();
 				state = GameState::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num5) {
+				//upgrade pickup
+				healthPickup.upgrade();
 				state = GameState::PLAYING;
 			}
 			if (event.key.code == Keyboard::Num6) {
+				//upgrade pickup
+				ammoPickup.upgrade();
 				state = GameState::PLAYING;
 			}
 
 			if (state == GameState::PLAYING) {
+				wave++;
+
 				//will be modified
-				arena.width = 500;
-				arena.height = 500;
+				arena.width = 500 * wave;
+				arena.height = 500 * wave;
 				arena.left = 0;
-arena.top = 0;
+				arena.top = 0;
 
-//pass vertex array by reference
-int tileSize = createBackground(background, arena);
+				//pass vertex array by reference
+				int tileSize = createBackground(background, arena);
 
-//spawn player in middle of arena
-player.spawn(arena, resolution, tileSize);
+				//spawn player in middle of arena
+				player.spawn(arena, resolution, tileSize);
 
-//configure pickups
-healthPickup.setArena(arena);
-ammoPickup.setArena(arena);
+				//configure pickups
+				healthPickup.setArena(arena);
+				ammoPickup.setArena(arena);
 
-//create horde
-numZombies = 10;//TODO: dynamic on level
+				//create horde
+				numZombies = 5 * wave;
 
-//free up memory
-delete[] zombies;
+				//free up memory
+				delete[] zombies;
 
-//use memory
-zombies = createHorde(numZombies, arena);
+				//use memory
+				zombies = createHorde(numZombies, arena);
 
-numZombiesAlive = numZombies;
+				numZombiesAlive = numZombies;
 
-clock.restart();
+				//play powerup sound
+				powerUp.play();
+
+				clock.restart();
 			}
 		}
 
@@ -362,6 +423,8 @@ clock.restart();
 									state = GameState::LEVELING_UP;
 								}
 							}
+							//splat
+							splat.play();
 						}
 					}
 				}
@@ -372,12 +435,19 @@ clock.restart();
 				if (zombies[i].isAlive()) {
 					if (zombies[i].getPosition().intersects(player.getPosition())){
 						if (player.hit(gameTimeTotal)) {
-							//TODO:
+							hit.play();
 						}
 
 						//player died
 						if (player.getHealth() <= 0) {
 							state = GameState::GAME_OVER;
+
+							//if new hiscore 
+							if (score == hiScore) {
+								std::ofstream outputFile("gamedata/scores.txt");
+								outputFile << hiScore;
+								outputFile.close();
+							}
 						}
 					}
 				}
@@ -385,9 +455,11 @@ clock.restart();
 
 			//player touched pickup
 			if (player.getPosition().intersects(healthPickup.getPosition()) && healthPickup.isSpawned()) {
+				pickUp.play();
 				player.increaseHealthLevel(healthPickup.gotIt());
 			}
 			if (player.getPosition().intersects(ammoPickup.getPosition()) && ammoPickup.isSpawned()) {
+				reload.play();
 				bulletsSpare += ammoPickup.gotIt();
 			}
 
