@@ -1,5 +1,6 @@
 //ZombieArena.cpp : Defines the entry point for the console application.
 #include "stdafx.h"
+#include <sstream>
 #include <fstream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -92,7 +93,7 @@ int main(){
 	Sprite spriteAmmoIcon;
 	Texture textureAmmoIcon = TextureHolder::getTexture("graphics/ammo_icon.png");
 	spriteAmmoIcon.setTexture(textureAmmoIcon);
-	spriteAmmoIcon.setPosition(28, 620);
+	spriteAmmoIcon.setPosition(28, 1010);
 
 	//font
 	Font font;
@@ -112,8 +113,8 @@ int main(){
 	gameOverText.setFont(font);
 	gameOverText.setCharacterSize(80);
 	gameOverText.setFillColor(Color::White);
-	gameOverText.setPosition(280, 540);
-	gameOverText.setString("Press Enter \nto play");
+	gameOverText.setPosition(780, 840);
+	gameOverText.setString("Press Enter \n  to play");
 
 	//levelling up
 	Text levelUpText;
@@ -128,7 +129,7 @@ int main(){
 	ammoText.setFont(font);
 	ammoText.setCharacterSize(50);
 	ammoText.setFillColor(Color::White);
-	ammoText.setPosition(116, 620);
+	ammoText.setPosition(116, 1010);
 
 	//score
 	Text scoreText;
@@ -149,17 +150,17 @@ int main(){
 	hiScoreText.setFont(font);
 	hiScoreText.setCharacterSize(80);
 	hiScoreText.setFillColor(Color::White);
-	hiScoreText.setPosition(980, 0);
-	//std::stringstream ss;
-	//ss << hiscore
-	hiScoreText.setString("High score: " + hiScore);
+	hiScoreText.setPosition(1400, 0);
+	std::stringstream ss;
+	ss << "High score: " << hiScore;
+	hiScoreText.setString(ss.str());
 
 	//zombies remaining
 	Text zombiesRemainingText;
 	zombiesRemainingText.setFont(font);
 	zombiesRemainingText.setCharacterSize(50);
 	zombiesRemainingText.setFillColor(Color::White);
-	zombiesRemainingText.setPosition(975, 620);
+	zombiesRemainingText.setPosition(1600, 1010);
 	//std::stringstream ss;
 	//ss << hiscore
 	zombiesRemainingText.setString("Zombies: 100");
@@ -170,15 +171,15 @@ int main(){
 	waveNumberText.setFont(font);
 	waveNumberText.setCharacterSize(50);
 	waveNumberText.setFillColor(Color::White);
-	waveNumberText.setPosition(750, 620);
+	waveNumberText.setPosition(750, 1010);
 	//std::stringstream ss;
 	//ss << hiscore
-	zombiesRemainingText.setString("Wave: 0");
+	waveNumberText.setString("Wave: 0");
 
 	//health
 	RectangleShape healthBar;
 	healthBar.setFillColor(Color::Red);
-	healthBar.setPosition(300, 620);
+	healthBar.setPosition(300, 1000);
 
 	//hud, to allow for efficiency
 	int framesSinceLastHUDUpdate = 0;
@@ -240,8 +241,9 @@ int main(){
 					if (event.key.code == Keyboard::R) {
 						if (bulletsSpare >= clipSize) {
 							//enough ammo
+							int prevBulletAmount = bulletsInClip;
 							bulletsInClip = clipSize;
-							bulletsSpare -= clipSize;
+							bulletsSpare -= (clipSize - prevBulletAmount);
 							reload.play();
 						}
 						else if (bulletsSpare > 0) {
@@ -359,7 +361,6 @@ int main(){
 		}
 
 		//update frame
-
 		if (state == GameState::PLAYING) {
 			Time dt = clock.restart();
 			gameTimeTotal += dt;
@@ -470,11 +471,17 @@ int main(){
 			//claculate fps
 			if (framesSinceLastHUDUpdate > fpsMeasurementFrameInterval) {
 				//set strings for hud
-				ammoText.setString(bulletsInClip + "/" + bulletsSpare);
-				scoreText.setString("Score: " + score);
-				hiScoreText.setString("Hi-Score: " + hiScore);
-				waveNumberText.setString("Wave: " + wave);
-				zombiesRemainingText.setString("Zombies: " + numZombiesAlive);
+				std::stringstream ammoSS, scoreSS, hiScoreSS, waveSS, zombiesSS;
+				ammoSS << bulletsInClip << "/" << bulletsSpare;
+				scoreSS << "Score: " << score;
+				hiScoreSS << "Hi-Score: " << hiScore;
+				waveSS << "Wave: " << wave;
+				zombiesSS << "Zombies: " << numZombiesAlive;
+				ammoText.setString(ammoSS.str());
+				scoreText.setString(scoreSS.str());
+				hiScoreText.setString(hiScoreSS.str());
+				waveNumberText.setString(waveSS.str());
+				zombiesRemainingText.setString(zombiesSS.str());
 
 				//reset
 				framesSinceLastHUDUpdate = 0;
@@ -511,7 +518,7 @@ int main(){
 				window.draw(ammoPickup.getSprite());
 			}
 			if (healthPickup.isSpawned()) {
-				window.draw(ammoPickup.getSprite());
+				window.draw(healthPickup.getSprite());
 			}
 
 			//draw cursor
