@@ -41,7 +41,7 @@ void Pickup::spawn(){
 	_sprite.setPosition(x, y);
 }
 FloatRect Pickup::getPosition(){
-	return _sprite.getGlobalBounds;
+	return _sprite.getGlobalBounds();
 }
 Sprite Pickup::getSprite(){
 	return _sprite;

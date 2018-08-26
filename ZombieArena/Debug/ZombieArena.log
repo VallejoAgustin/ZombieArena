@@ -1,3 +1,8 @@
 ﻿  Pickup.cpp
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\pickup.cpp(19): warning C4244: '=': conversion from 'const int' to 'float', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\pickup.cpp(20): warning C4244: '=': conversion from 'const int' to 'float', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\pickup.cpp(41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\pickup.cpp(79): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\pickup.cpp(82): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
   ZombieArena.vcxproj -> C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.exe
   ZombieArena.vcxproj -> C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.pdb (Full PDB)
