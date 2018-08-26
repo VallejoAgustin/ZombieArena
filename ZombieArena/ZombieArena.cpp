@@ -46,9 +46,7 @@ int main(){
 
 	//create background
 	VertexArray background;
-	//load texture
-	Texture textureBackground;
-	textureBackground.loadFromFile("graphics/background_sheet.png");
+	Texture textureBackground = TextureHolder::getTexture("graphics/background_sheet.png");
 
 	int numZombies, numZombiesAlive;
 	Zombie* zombies = nullptr;

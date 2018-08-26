@@ -1,12 +1,9 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "TextureHolder.h"
 
 Player::Player() {
-	if (!_texture.loadFromFile("graphics/player.png")) {
-		//std::cout << "Error loading player image!\n";
-		//TODO: try/catch
-	}
-	_sprite.setTexture(_texture);
+	_sprite = Sprite(TextureHolder::getTexture("graphics/player.png"));
 
 	//initialize player variables
 	_speed = START_SPEED;
