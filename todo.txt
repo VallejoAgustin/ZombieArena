@@ -1,0 +1,6 @@
+create minimap, finding ammo/health pickups in later levels increases difficult w/o minimap
+vary zombie path, as of right now the zombies can cluster together, decreasing game difficulty
+go from array holding zombie class to list for efficiency in drawing
+determine hitbox and reduce current size
+identify why text screen tears
+tutorial/how to/rules
