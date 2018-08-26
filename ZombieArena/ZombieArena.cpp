@@ -62,6 +62,13 @@ int main(){
 	float fireRate = 1;
 	Time fireLastPressed;
 
+	//hide mouse pointer and replace w/ crosshair
+	window.setMouseCursorVisible(false);
+	Sprite spriteCrosshair;
+	Texture textureCrosshair = TextureHolder::getTexture("graphics/crosshair.png");
+	spriteCrosshair.setTexture(textureCrosshair);
+	spriteCrosshair.setOrigin(25, 25);
+
 	while (window.isOpen()) {
 		//handle events
 		Event event;
@@ -191,6 +198,10 @@ int main(){
 			mouseScreenPosition = Mouse::getPosition();
 			//convert to world coords
 			mouseWorldPosition = window.mapPixelToCoords(mouseScreenPosition, mainView);
+			
+			//set crosshair to mouse world location
+			spriteCrosshair.setPosition(mouseWorldPosition);
+			
 			//update player based on mouse::getposi();
 			player.update(dtAsSeconds, mouseScreenPosition);
 
@@ -239,6 +250,9 @@ int main(){
 
 			//draw player
 			window.draw(player.getSprite());
+
+			//draw cursor
+			window.draw(spriteCrosshair);
 		}
 
 		if (state == GameState::LEVELING_UP) {
