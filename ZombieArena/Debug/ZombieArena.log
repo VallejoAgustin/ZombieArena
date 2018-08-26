@@ -2,5 +2,6 @@
 c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(28): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
 c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(29): warning C4244: '=': conversion from 'unsigned int' to 'float', possible loss of data
 c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(32): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+c:\users\stin\desktop\visual studio stuff\projects\zombiearena\zombiearena\zombiearena.cpp(395): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   ZombieArena.vcxproj -> C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.exe
   ZombieArena.vcxproj -> C:\Users\Stin\Desktop\Visual Studio Stuff\Projects\ZombieArena\Debug\ZombieArena.pdb (Full PDB)
